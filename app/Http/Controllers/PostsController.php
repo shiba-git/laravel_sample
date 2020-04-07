@@ -1,9 +1,9 @@
 <?php
 
 // 略
-
+namespace App\Http\Controllers;
 use App\Post;
-use Storage;
+//use Storage;
 
 class PostsController extends Controller
 {
@@ -27,9 +27,9 @@ class PostsController extends Controller
       //s3アップロード開始
       $image = $request->file('image');
       // バケットの`myprefix`フォルダへアップロード
-      $path = Storage::disk('s3')->putFile('myprefix', $image, 'public');
+      //$path = Storage::disk('s3')->putFile('myprefix', $image, 'public');
       // アップロードした画像のフルパスを取得
-      $post->image_path = Storage::disk('s3')->url($path);
+      //$post->image_path = Storage::disk('s3')->url($path);
 
       $post->save();
 
