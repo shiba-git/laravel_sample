@@ -2,7 +2,6 @@
 namespace Deployer;
 
 require 'recipe/laravel.php';
-require 'recipe/npm.php';
 // Project name
 set('application', 'laravel_sample');
 
