@@ -2,7 +2,7 @@
 namespace Deployer;
 
 require 'recipe/laravel.php';
-
+require 'recipe/npm.php';
 // Project name
 set('application', 'laravel_sample');
 
@@ -29,17 +29,37 @@ host('3.112.140.196')
     ->set('branch', 'master')
     ->identityFile('/var/www/html/aws-barkey-tokyo.pem')
     ->set('deploy_path', '/{{application}}');    
-    
-// Tasks
 
+task('npm:run', function (): void {
+    run('cd {{release_path}} && chmod 707 public');
+    run('cd {{release_path}} && npm install');
+});
+
+// Tasks
 task('build', function () {
     run('cd {{release_path}} && build');
 });
+
+task('deploy', [
+    'deploy:info',
+    'deploy:prepare', 
+    'deploy:lock', 
+    'deploy:release', 
+    'deploy:update_code', 
+    'deploy:shared', 
+    'deploy:writable',
+    'deploy:vendors', 
+    'deploy:clear_paths',
+    'deploy:symlink', 
+    'deploy:unlock',  
+    'cleanup',
+    'success',
+]);
 
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
 
 // Migrate database before symlink new release.
 
-// before('deploy:symlink', 'artisan:migrate');
+//before('deploy:symlink', 'artisan:migrate');
 
